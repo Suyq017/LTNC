@@ -5,8 +5,25 @@
 const firebase = require('firebase/app');
 require('firebase/database'); 
 const admin = require('firebase-admin');
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
 
-var firebaseConfig = {
+
+const serviceAccount = {
+  "type": "service_account",
+  "project_id": "ltnc-25ea6",
+  "private_key_id": "6fba9cc24e1178e4f8c5223d36f609eb146ef17c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCvsSWob0XnFwG0\n1pnhVKrPOcfbkZJbaDzAQFVdwuvscbFgrgiKFPZYLHfLhjn0cz2MSAukHfCEiIZb\nKiStzFM+VHaJA3WiJWDKWRBIzG5Qf5uNtuvrB/BHcAQ4b6YW/2vcZxJ+DgKpHrUK\nBqJ8ljM1C9xYng/kIphzZE6rn8W3bdVvhJn84CwVn4KJUkvjCaG0RIg9l8eCcj66\n9lzkN7tEOcdCGnZVgHVCGJyx1R7Qlu+064PXOttmQI9iiPS1AEkEDxyjA3oi3bap\njfgjlU1WAh0v6pzY0z2Vrtireq79X9V35e16Ec2BdZp/gARhe+9wFiLq5cufKg/K\ncvmQecrzAgMBAAECggEAPZUGwZzLMD6Qsw3bny9ZtcwngQ9r8Q0+6hZCtdw6bMTH\nKz+lL508YdioXtbcHpJ8Ot0P84UpBpOCIJdLhv3NGdZqPAlR5LVcUWDZg+LgMegg\nopJA7D96mdeqKwv7eCksafNY+IU5qoTgaTS9JJVTOp8/K3Kv2EPGEwBQUPjuSSYo\nsZyaNTqCWPstT6dVKtfFkw02AUYSkzUtlXSlqb1liJRAr3hE2/SGBs5s8C8wohvP\nxWxzwBtwMKhlIBmD438cUCWG9Gh/KLr0HI2sKM/PkVGsH5gmWr6Y0LjQvivuGNWF\nQmLrfulhkMeV6pV3rDPFYkB4wsj5digYi1waGi30nQKBgQD15GBCJ/HrOTeRiDPH\nfEzk8ZJs/NIiVJLWUKPqwmmjJroq9XkKZGSq/EZyQ1eV+kqB8IxgLlRo2dsbpFfu\nvrqmoovR7suDcibxkqcvriJoD07U5jPxJGIs/AttywB5SfSZth5je7EF3asDttEh\n8y0giROvHp7GjN4e4Hi547aLHQKBgQC26ga9jBKgmH+QX+CKXI1WEuioKqTwRYSY\ngyvQH7WS5a9WoO0WX7Mj6z8kgGuHB0XFfILVFixHkGKOmcJn2OsHNKGWGHNSnG4f\nUCyWlTisgYXFGbqdyXAd7kFQqm5zGN0WaeNsWhMCjsFCU0vqSSMIXKITp1ktNinr\nyFTYphTBTwKBgCsfCrZvVOCAXztZXGM+bCm2J4yPZbZ5iGqnJ6fSwj3HW9yOwdRN\nuM23gg8luiVmCEzzR1rSpSDiG6ekUXtf3VG9rbF6JByAF05D/qfA7O28yYFSgYdn\nbwQei06MzB95FbkjE/80QN4bepMjK1e90osjHt2WDBgbuhRGH0XSJkANAoGBAKuu\nLHVsK2+gstqHovE6vU20obp1jCoYlcOwGkdV+87M1i2xDdaaLEHiY3mXL1Wldc9O\ndl4aWaUx18+Qce+WocI5nBCNEnDPcmzhi3gqxu7jAvNkmsvObfUp0xQrY0+UXq7S\n5CqmwID+DFZ8aByWWNNYXqejwwe0dtRfS4OtHn3xAoGBAOSLYBzk6BGscgEgiLIC\n30LfmTicyaqUWnyCrjuYF06JyCMug7nnF/+0GnhnZRyFQTmLXCb2GsmaOjBenwkE\n27/EXBClFpacFJMdPhBDWVAz7dA/jWhnYogiJ5JZxhXy9TUVyuWB3CNTTTjtIby6\n82OWFUpP+HoXUVPtOQr3a3rN\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-dvoi9@ltnc-25ea6.iam.gserviceaccount.com",
+  "client_id": "109502554699607974345",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-dvoi9%40ltnc-25ea6.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
+
+const firebaseConfig = {
     apiKey: "AIzaSyAm2Du9ovRq_cVU_2jTzSQs_SsTXoHikG8",
     authDomain: "ltnc-25ea6.firebaseapp.com",
     databaseURL: "https://ltnc-25ea6-default-rtdb.firebaseio.com",
@@ -17,10 +34,14 @@ var firebaseConfig = {
     measurementId: "G-SGSYMX429F"
 };
 
-// Khởi tạo Firebase
-const app = firebase.initializeApp(firebaseConfig);
-admin.initializeApp();
-const elistRef = firebase.database().ref("/Employees");
+// Khởi tạo Firebase Admin SDK với cấu hình của bạn
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: firebaseConfig.databaseURL
+});
+firebase.initializeApp(firebaseConfig);
+const db = admin.database();
+const elistRef = db.ref("/Employees");
 
     function checkDuplicate(name) {
         return new Promise((resolve, reject) => {
@@ -431,6 +452,7 @@ function getEmployeeById(id) {
         });
 }
 
+
 function getEmployeeByName(name) {
     const employeeRef = firebase.database().ref('Employees/' + name);
 
@@ -448,6 +470,26 @@ function getEmployeeByName(name) {
         });
 }
 
+function getEmployeeNameById(id) {
+  const employeesRef = firebase.database().ref('Employees');
+
+  return employeesRef.once('value')
+      .then(snapshot => {
+          let employeeKey = null;
+          snapshot.forEach(childSnapshot => {
+              const employeeId = childSnapshot.child('id').val();
+              if (employeeId === id) {
+                  employeeKey = childSnapshot.key;
+                  return true; // Dừng vòng lặp khi tìm thấy nhân viên có ID tương ứng
+              }
+          });
+          return employeeKey;
+      })
+      .catch(error => {
+          console.error("Lỗi khi truy vấn dữ liệu:", error);
+          return null; // Trả về null nếu có lỗi xảy ra
+      });
+}
 function getSchedule(day, shift) {
   let thu;
   let tenShift;
@@ -508,3 +550,105 @@ dayRef.once('value')
     });
 }
 
+const getDataFromFirebase = async (Type) => {
+  try {
+    const snapshot = await firebase.database().ref(Type).once("value");
+    const data = [];
+    snapshot.forEach((childSnapshot) => {
+      const childData = childSnapshot.val();
+      data.push(childData);
+    });
+    return data;
+  } catch (error) {
+    console.error("Error getting data from Firebase:", error);
+    return null;
+  }
+};
+
+async function createHTMLTable(data) {
+  let html = '<table>';
+  const employeeNames = await Promise.all(data.map(item => getEmployeeNameById(item.id)));
+  html += '<tr><th>ID</th><th>Tên</th><th>Bằng cấp</th><th>Email</th><th>Số điện thoại</th><th>Chức vụ</th><th>Chuyên ngành</th></tr>';
+
+  data.sort((a, b) => a.id - b.id);
+
+for (let i = 0; i < data.length; i++) {
+    html += '<tr>';
+    html += `<td>${i + 1}</td>`; // ID column
+    html += `<td>${employeeNames[i]}</td>`; // Name column
+    html += `<td>${data[i].degree}</td>`;
+    html += `<td>${data[i].email}</td>`;
+    html += `<td>${data[i].phone}</td>`;
+    html += `<td>${data[i].position}</td>`;
+    html += `<td>${data[i].specialization}</td>`;
+    html += '<td>'
+    html += `<button onclick="editEmployee('${i + 1}')">Edit</button>`;
+    html += `<button onclick="deleteEmployee('${i + 1}')">Delete</button>`;
+    html += '</td>'
+    html += '</tr>';
+}
+
+  html += '</table>';
+  return html;
+}
+
+// Run the program and get the tableHTML
+const getTableHTML = async () => {
+  const result = await getDataFromFirebase("Employees");
+  const tableHTML = await createHTMLTable(result);
+  return tableHTML;
+};
+
+    //TEST
+// getTableHTML().then(result => {
+//   console.log(result);
+// });
+
+function searchEmployee(name) {
+  // Get the table
+  const table = document.getElementById('employeeTable');
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (let i = 1; i < table.rows.length; i++) {
+    let td = table.rows[i].getElementsByTagName('td')[1]; // Assuming the name is in the second column
+    if (td) {
+      let txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().includes(name.toUpperCase())) {
+        table.rows[i].style.display = "";
+      } else {
+        table.rows[i].style.display = "none";
+      }
+    }
+  }
+}
+
+function editEmployee(id) {
+  // Get the employee row
+  const row = document.getElementById('row' + id);
+
+  // Create a form for editing
+  const form = document.createElement('form');
+  form.innerHTML = `
+      <label>New Info: <input type="text" name="newInfo"></label>
+      <button type="submit">Save</button>
+  `;
+
+  // Handle form submission
+  form.onsubmit = function(e) {
+      e.preventDefault();
+
+      // Get the new value
+      const newInfo = form.elements.newInfo.value;
+
+      // Update the table
+      for (let i = 1; i < row.cells.length; i++) {
+          row.cells[i].innerText = newInfo;
+      }
+
+      // Remove the form
+      form.remove();
+  };
+
+  // Append the form to the row
+  row.appendChild(form);
+}

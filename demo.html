@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Data</title>
+</head>
+</body>
+<script src="demo.js"></script>
+
+<table id="employeeTable">
+    <tr><th>ID</th><th>Tên</th><th>Bằng cấp</th><th>Email</th><th>Số điện thoại</th><th>Chức vụ</th><th>Chuyên ngành</th></tr><tr><td>1</td><td>Hoshino Nami</td><td>Tiến Sĩ</td><td>ngothibap@gmail.com</td><td>0372193590</td><td>Bác sĩ</td><td>Đa Khoa</td><td><button onclick="editEmployee('1')">Edit</button><button onclick="deleteEmployee('1')">Delete</button></td></tr><tr><td>2</td><td>Lê Văn Cần</td><td>Tiến Sĩ</td><td>longthileo@gmail.com</td><td>0328232853</td><td>Bác sĩ</td><td>Da liễu</td><td><button onclick="editEmployee('2')">Edit</button><button onclick="deleteEmployee('2')">Delete</button></td></tr><tr><td>3</td><td>Lòng Thị Lèo </td><td>Tiến Sĩ</td><td>nguyenvana@gmail.com</td><td>0425343756</td><td>Bác sĩ</td><td>Tai - Mũi Họng</td><td><button onclick="editEmployee('3')">Edit</button><button onclick="deleteEmployee('3')">Delete</button></td></tr><tr><td>4</td><td>Nguyễn Thanh Tùng</td><td>Cử nhân </td><td>yuamikami@gmail.com</td><td>0354723284</td><td>Y tá</td><td></td><td><button onclick="editEmployee('4')">Edit</button><button onclick="deleteEmployee('4')">Delete</button></td></tr><tr><td>5</td><td>Nguyễn Văn A</td><td>Cử nhân </td><td>tranthib@gmail.com</td><td>0348166825</td><td>Y tá</td><td></td><td><button onclick="editEmployee('5')">Edit</button><button onclick="deleteEmployee('5')">Delete</button></td></tr><tr><td>6</td><td>Ngô Thị Bắp</td><td>Cử nhân </td><td>levanccan@gmail.com</td><td>0342374887</td><td>Y tá</td><td></td><td><button onclick="editEmployee('6')">Edit</button><button onclick="deleteEmployee('6')">Delete</button></td></tr><tr><td>7</td><td>Trần Thị B</td><td>Cử nhân </td><td>tranvanteo@gmail.com</td><td>0352732951</td><td>Y tá</td><td></td><td><button onclick="editEmployee('7')">Edit</button><button onclick="deleteEmployee('7')">Delete</button></td></tr><tr><td>8</td><td>Trần Văn Tèo</td><td>Cao Đẳng</td><td>hoshinonami@gmail.com</td><td>0373304941</td><td>Điều dưỡng</td><td></td><td><button onclick="editEmployee('8')">Edit</button><button onclick="deleteEmployee('8')">Delete</button></td></tr><tr><td>9</td><td>Yua Mikami </td><td>Trung Cấp</td><td>nguyenthanhtung@gmail.com</td><td>0332362782</td><td>Trợ lí điều dưỡng</td><td></td><td><button onclick="editEmployee('9')">Edit</button><button 
+onclick="deleteEmployee('9')">Delete</button></td></tr><tr><td>10</td><td>Đỗ Bách Khoa</td><td>Cao Đẳng</td><td>dobachkhoa@gmail.com</td><td>0369497731</td><td>Trợ lí điều dưỡng</td><td></td><td><button onclick="editEmployee('10')">Edit</button><button onclick="deleteEmployee('10')">Delete</button></td></tr>
+</table>
+
+<script>
+function searchEmployee(name) {
+  // Get the table
+  const table = document.getElementById('employeeTable');
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (let i = 1; i < table.rows.length; i++) {
+    let td = table.rows[i].getElementsByTagName('td')[1]; // Assuming the name is in the second column
+    if (td) {
+      let txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().includes(name.toUpperCase())) {
+        table.rows[i].style.display = "";
+      } else {
+        table.rows[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
+<button onclick="searchEmployee('Nguyễn')">Search</button>
+</body>
+</html>
